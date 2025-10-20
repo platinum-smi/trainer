@@ -5,12 +5,28 @@
 <title>Тренажер комбинаций — Punto Switcher</title>
 <style>
 html, body { height: 100%; margin: 0; font-family: "Century Gothic", CenturyGothic, Arial, sans-serif; transition: background 0.3s, color 0.3s; display: flex; flex-direction: column; }
+/* Светлая тема по умолчанию */
+body.light {
+    background: #f0f4f8;
+    color: #222;
+}
+/* Темная тема */
+body.dark {
+    background: #1e1e1e;
+    color: #eee;
+}
 /* Автоматическая тема */
 @media (prefers-color-scheme: dark) {
-    body { background: #1e1e1e; color: #eee; }
+    body:not(.light) {
+        background: #1e1e1e;
+        color: #eee;
+    }
 }
 @media (prefers-color-scheme: light) {
-    body { background: #f0f4f8; color: #222; }
+    body:not(.dark) {
+        background: #f0f4f8;
+        color: #222;
+    }
 }
 
 .main { flex: 1; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; }
@@ -28,9 +44,191 @@ body.dark .stats { color: #ccc; }
 footer { padding: 12px; text-align: center; font-size: 13px; color: #777; line-height: 1.5; }
 footer a { color: inherit; text-decoration: none; font-weight: bold; }
 footer a:hover { text-decoration: underline; }
+
+/* Элементы управления темой */
+.theme-controls {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.theme-btn {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+body.dark .theme-btn {
+    background: #333;
+    color: #fff;
+    border-color: #555;
+}
+
+.theme-btn.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Элементы управления фильтрами */
+.filter-controls {
+    margin: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.filter-btn {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+body.dark .filter-btn {
+    background: #333;
+    color: #fff;
+    border-color: #555;
+}
+
+.filter-btn.active {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.filter-section {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: rgba(255,255,0.1);
+}
+
+body.dark .filter-section {
+    background: rgba(0,0,0,0.1);
+    border-color: #444;
+}
+
+.filter-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.filter-option {
+    padding: 3px 8px;
+    background: #e9ecef;
+    border-radius: 3px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+body.dark .filter-option {
+    background: #495057;
+}
+
+.filter-option.active {
+    background: #007bff;
+    color: white;
+}
+
+/* Элементы управления сохранением */
+.save-controls {
+    margin: 10px 0;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.save-btn {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+body.dark .save-btn {
+    background: #333;
+    color: #fff;
+    border-color: #555;
+}
+
+.save-btn:hover {
+    background: #007bff;
+    color: white;
+}
+
+/* Элементы управления таймером */
+.timer-controls {
+    margin: 10px 0;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer-display {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px 10px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 3px;
+}
+
+.timer-btn {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+body.dark .timer-btn {
+    background: #333;
+    color: #fff;
+    border-color: #555;
+}
+
+.timer-btn.active {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+.pause-btn {
+    background: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.pause-btn.active {
+    background: #28a745 !important;
+}
 </style>
 </head>
-<body>
+<body class="light">
+
+<div class="theme-controls">
+    <button class="theme-btn active" data-theme="light">Светлая</button>
+    <button class="theme-btn" data-theme="dark">Темная</button>
+    <button class="theme-btn" data-theme="auto">Авто</button>
+</div>
 
 <div class="main">
   <div id="display-area"></div>
@@ -38,6 +236,32 @@ footer a:hover { text-decoration: underline; }
   <div class="stats" id="stats">
     CPM: 0 | Точность: 100% | Ошибки: 0 | Комбинации: 0
   </div>
+</div>
+
+<div class="filter-controls" id="filterControls">
+    <button class="filter-btn" data-filter="all">Все</button>
+    <button class="filter-btn" data-filter="common">Общие</button>
+    <button class="filter-btn" data-filter="business">Бизнес</button>
+    <button class="filter-btn" data-filter="transport">Транспорт</button>
+    <button class="filter-btn" data-filter="property">Недвижимость</button>
+    <button class="filter-btn" data-filter="services">Услуги</button>
+</div>
+
+<div class="filter-section" id="categoryFilters" style="display:none;">
+    <div class="filter-header">Категории:</div>
+    <div class="filter-options" id="categoryOptions"></div>
+</div>
+
+<div class="save-controls">
+    <button class="save-btn" id="saveProgress">Сохранить прогресс</button>
+    <button class="save-btn" id="loadProgress">Загрузить прогресс</button>
+    <button class="save-btn" id="resetProgress">Сбросить прогресс</button>
+</div>
+
+<div class="timer-controls">
+    <div class="timer-display" id="timer">00:00</div>
+    <button class="timer-btn pause-btn" id="pauseBtn">Пауза</button>
+    <button class="timer-btn" id="resetTimerBtn">Сброс</button>
 </div>
 
 <footer>
@@ -48,6 +272,8 @@ footer a:hover { text-decoration: underline; }
 <script>
 // Подгружаем словарь комбинаций из dict.txt
 let entries = [];
+let filteredEntries = []; // Отфильтрованные комбинации
+let categoryMap = {}; // Карта категорий для фильтрации
 
 fetch('dict.txt')
     .then(response => response.text())
@@ -57,9 +283,62 @@ fetch('dict.txt')
             return { key: key.trim(), value: value.trim() };
         });
         document.getElementById('footer-count').innerText = `Загружено комбинаций: ${entries.length}`;
+        
+        // Создаем карту категорий
+        createCategoryMap(entries);
+        // Инициализируем фильтры
+        initializeFilters();
         startTraining();
     })
     .catch(err => alert('Ошибка при загрузке dict.txt: ' + err));
+
+function createCategoryMap(entries) {
+    // Простая категоризация на основе префиксов ключей
+    const categoryPrefixes = {
+        'all': [], // Все комбинации
+        'common': ['нк', 'мп', 'и', 'п', 'в', 'р', 'с'], // Общие
+        'business': ['к', 'п', 'р', 'с'], // Бизнес
+        'transport': ['а', 'м', 'к', 'п', 'р'], // Транспорт
+        'property': ['д', 'кд', 'пд', 'рд'], // Недвижимость
+        'services': ['к', 'п', 'р', 'с', 'в'] // Услуги
+    };
+    
+    // Группируем комбинации по категориям
+    categoryMap = {};
+    entries.forEach(entry => {
+        const key = entry.key.toLowerCase();
+        let category = 'common'; // По умолчанию общие
+        
+        // Определяем категорию по префиксу
+        for (const [cat, prefixes] of Object.entries(categoryPrefixes)) {
+            if (cat !== 'all' && prefixes.some(prefix => key.startsWith(prefix))) {
+                category = cat;
+                break;
+            }
+        }
+        
+        if (!categoryMap[category]) {
+            categoryMap[category] = [];
+        }
+        categoryMap[category].push(entry);
+    });
+}
+
+function initializeFilters() {
+    // Создаем список категорий для фильтрации
+    const categories = Object.keys(categoryMap).filter(cat => cat !== 'all');
+    const container = document.getElementById('categoryOptions');
+    container.innerHTML = '';
+    
+    categories.forEach(category => {
+        const option = document.createElement('div');
+        option.className = 'filter-option';
+        option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        option.setAttribute('data-category', category);
+        option.addEventListener('click', () => toggleCategoryFilter(category));
+        container.appendChild(option);
+    });
+}
 
 let currentIndex = 0;
 let currentTarget = '';
@@ -70,15 +349,46 @@ let totalErrors = 0;
 let totalCombos = 0;
 let sessionStartTime = Date.now(); // старт всей сессии
 
+// Текущий фильтр
+let currentFilter = 'all';
+
+// Сохраненные данные тренировки
+let savedTrainingData = null;
+
+// Таймер
+let timerInterval = null;
+let isTimerRunning = false;
+let timerSeconds = 0;
+let pausedTime = 0;
+
 function startTraining() {
+    // Применяем фильтр при старте
+    applyFilter(currentFilter);
     nextCombination();
 }
 
+function applyFilter(filterType) {
+    currentFilter = filterType;
+    if (filterType === 'all') {
+        filteredEntries = entries;
+    } else {
+        filteredEntries = categoryMap[filterType] || [];
+    }
+    // Если нет комбинаций для выбранного фильтра, используем все
+    if (filteredEntries.length === 0) {
+        filteredEntries = entries;
+    }
+}
+
 function nextCombination() {
-    currentIndex = Math.floor(Math.random() * entries.length);
-    currentTarget = entries[currentIndex].key;
+    if (filteredEntries.length === 0) {
+        // Если фильтр не дал результатов, используем все комбинации
+        filteredEntries = entries;
+    }
+    currentIndex = Math.floor(Math.random() * filteredEntries.length);
+    currentTarget = filteredEntries[currentIndex].key;
     currentPos = 0;
-    document.getElementById('display-area').innerText = entries[currentIndex].value;
+    document.getElementById('display-area').innerText = filteredEntries[currentIndex].value;
     renderPrompt();
 }
 
@@ -124,6 +434,178 @@ document.addEventListener('keydown', function(e){
             updateStats();
         }
     }
+});
+
+// Обработка переключения тем
+document.querySelectorAll('.theme-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const theme = this.getAttribute('data-theme');
+        document.body.className = theme; // Изменяем класс body
+        
+        // Обновляем активную кнопку
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        this.classList.add('active');
+        
+        // Сохраняем выбор темы в localStorage
+        localStorage.setItem('theme', theme);
+    });
+});
+
+// Обработка фильтров
+document.querySelectorAll('.filter-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const filter = this.getAttribute('data-filter');
+        applyFilter(filter);
+        
+        // Обновляем активную кнопку
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        this.classList.add('active');
+        
+        // Показываем/скрываем секцию категорий
+        const filterSection = document.getElementById('categoryFilters');
+        if (filter === 'custom') {
+            filterSection.style.display = 'block';
+        } else {
+            filterSection.style.display = 'none';
+        }
+        
+        // Перезапускаем тренировку с новым фильтром
+        startTraining();
+    });
+});
+
+// Обработка категорий
+function toggleCategoryFilter(category) {
+    const option = document.querySelector(`.filter-option[data-category="${category}"]`);
+    option.classList.toggle('active');
+    // Здесь можно добавить логику для фильтрации по выбранным категориям
+    // Для простоты реализации будем использовать только один фильтр за раз
+}
+
+// Сохранение прогресса
+document.getElementById('saveProgress').addEventListener('click', function() {
+    const trainingData = {
+        currentFilter: currentFilter,
+        totalChars: totalChars,
+        totalErrors: totalErrors,
+        totalCombos: totalCombos,
+        sessionStartTime: sessionStartTime,
+        currentIndex: currentIndex,
+        currentPos: currentPos,
+        currentTarget: currentTarget,
+        filteredEntries: filteredEntries
+    };
+    
+    localStorage.setItem('trainingProgress', JSON.stringify(trainingData));
+    alert('Прогресс сохранен!');
+});
+
+// Загрузка прогресса
+document.getElementById('loadProgress').addEventListener('click', function() {
+    const savedData = localStorage.getItem('trainingProgress');
+    if (savedData) {
+        try {
+            const trainingData = JSON.parse(savedData);
+            // Восстанавливаем состояние
+            currentFilter = trainingData.currentFilter;
+            totalChars = trainingData.totalChars;
+            totalErrors = trainingData.totalErrors;
+            totalCombos = trainingData.totalCombos;
+            sessionStartTime = trainingData.sessionStartTime;
+            currentIndex = trainingData.currentIndex;
+            currentPos = trainingData.currentPos;
+            currentTarget = trainingData.currentTarget;
+            filteredEntries = trainingData.filteredEntries;
+            
+            // Обновляем UI
+            updateStats();
+            renderPrompt();
+            alert('Прогресс загружен!');
+        } catch (e) {
+            alert('Ошибка при загрузке прогресса: ' + e.message);
+        }
+    } else {
+        alert('Нет сохраненного прогресса');
+    }
+});
+
+// Сброс прогресса
+document.getElementById('resetProgress').addEventListener('click', function() {
+    if (confirm('Вы уверены, что хотите сбросить весь прогресс?')) {
+        localStorage.removeItem('trainingProgress');
+        // Сбросить статистику
+        totalChars = 0;
+        totalErrors = 0;
+        totalCombos = 0;
+        sessionStartTime = Date.now();
+        updateStats();
+        alert('Прогресс сброшен!');
+    }
+});
+
+// Таймер
+function updateTimerDisplay() {
+    const minutes = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+    const seconds = (timerSeconds % 60).toString().padStart(2, '0');
+    document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+}
+
+function startTimer() {
+    if (!isTimerRunning) {
+        isTimerRunning = true;
+        document.getElementById('pauseBtn').classList.add('active');
+        timerInterval = setInterval(() => {
+            timerSeconds++;
+            updateTimerDisplay();
+        }, 1000);
+    }
+}
+
+function pauseTimer() {
+    if (isTimerRunning) {
+        isTimerRunning = false;
+        document.getElementById('pauseBtn').classList.remove('active');
+        clearInterval(timerInterval);
+    } else {
+        startTimer();
+    }
+}
+
+function resetTimer() {
+    if (isTimerRunning) {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+    }
+    timerSeconds = 0;
+    updateTimerDisplay();
+    document.getElementById('pauseBtn').classList.remove('active');
+}
+
+// Инициализация таймера
+document.getElementById('pauseBtn').addEventListener('click', pauseTimer);
+document.getElementById('resetTimerBtn').addEventListener('click', resetTimer);
+
+// Запуск таймера при загрузке
+window.addEventListener('load', function() {
+    startTimer();
+});
+
+// Инициализация темы при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('theme') || 'auto';
+    document.body.className = savedTheme;
+    
+    // Активируем соответствующую кнопку
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-theme') === savedTheme) {
+            btn.classList.add('active');
+        }
+    });
 });
 </script>
 
